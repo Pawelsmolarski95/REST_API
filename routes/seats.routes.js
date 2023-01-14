@@ -19,8 +19,12 @@ router.route('/seats').post((req, res) => {
         client: req.body.client, 
         email: req.body.email
     }
+    if(req.body.day && req.body.seat && req.body.client && req.body.email) {
         db.seats.push(newSeat);
         res.json({message: 'OK'})
+    } else {
+        res.status(404).json({mesage: 'Something was wrong'})
+    }
 });
 router.route('/seats/:id').delete((req, res) => {
     db.seats = db.seats.filter(e => e.id != req.params.id)

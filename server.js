@@ -1,7 +1,7 @@
 const express = require('express');
-const path = require('path');
 const app = express();
 const cors = require('cors');
+
 const testimonialsRoutes = require('./routes/testimonials.routes');
 const concertRoutes = require('./routes/concerts.routes');
 const seatsRoutes = require('./routes/seats.routes');

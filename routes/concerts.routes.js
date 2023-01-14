@@ -19,8 +19,12 @@ router.route('/concerts').post((req, res) => {
         day: req.body.day,
         image: req.body.image     
     }
-    db.concerts.push(newConcert);
-    res.json({message: 'OK'})
+    if(req.body.performer && req.body.genre && req.body.price && req.body.day && req.body.image) {
+        db.concerts.push(newConcert);
+        res.json({message: 'OK'});
+    } else {
+        res.status(404).json({ message : "404"});
+    }
 });
 
 router.route('/concerts/:id').delete((req, res) => {

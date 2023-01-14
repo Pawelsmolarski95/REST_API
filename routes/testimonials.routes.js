@@ -21,9 +21,13 @@ router.route('/testimonials').post((req, res) => {
         id: uuid.v4(),
         author: req.body.author,
         text: req.body.text
-     };
-     db.testimonials.push(newElements);
-     res.json({ message: "OK"});
+    };
+    if(req.body.author && req.body.text) {
+        db.testimonials.push(newElements);
+        res.json({ message: "OK"});
+    } else {
+        res.status(404).json({ message: 'Something was wrong...'});
+    }
  });
  
 router.route('/testimonials/:id').put((req, res) => {   
