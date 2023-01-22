@@ -9,25 +9,26 @@ router.route('/seats').get((req, res) => {
 router.route('/seats/:id').get((req, res) => {
     
     res.json(db.seats[req.params.id]);
+    req.io.emit('seatsUpdated', db.seats);
 });
 router.route('/seats').post((req, res) => {
+    const id = uuid.v4();
     
-    const newSeat = {
-        id: uuid.v4(),
-        day: req.body.day,
-        seat: req.body.seat, 
-        client: req.body.client, 
-        email: req.body.email
-    }
+    const {day, seat, client, email} = req.body;
     
-    if(db.seats.some(element => element.day == req.body.day && element.seat == req.body.seat)) {  
-            
-        res.status(404).json({ message: "The slot is already taken..." })  
-              
+    if(day && seat && client && email) {
+        if(!db.seats.some(e => (e.day == day && e.seat == seat))) { 
+            db.seats.push({id, ...req.body}) 
+            res.json({ message: 'OK' }) ;
+            req.io.emit('seatsUpdated', db.seats);
+         
+        } else {
+         res.status(404).json({ message: "The slot is already taken..." });
+        }
     } else {
-            db.seats.push(newSeat);
-            res.json({ message: 'OK' }) 
-    }
+        res.status(400).json({message: 'Please add all needed data'});
+    }      
+            
 });
 router.route('/seats/:id').delete((req, res) => {
     db.seats = db.seats.filter(e => e.id != req.params.id)
