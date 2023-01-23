@@ -15,7 +15,6 @@ router.route('/seats').post((req, res) => {
     const id = uuid.v4();
     
     const {day, seat, client, email} = req.body;
-    
     if(day && seat && client && email) {
         if(!db.seats.some(e => (e.day == day && e.seat == seat))) { 
             db.seats.push({id, ...req.body}) 

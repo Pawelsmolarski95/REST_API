@@ -1,26 +1,28 @@
-import { useEffect, useState} from 'react';
+import { useEffect} from 'react';
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Progress, Alert } from 'reactstrap';
-import { getSeats, getRequests, loadSeats,} from '../../../redux/seatsRedux';
+import { getSeats, getRequests, loadSeats, loadSeatsRequest,} from '../../../redux/seatsRedux';
 import './SeatChooser.scss';
 import { CLIENT_URL } from '../../../config';
 
+
 const SeatChooser = ({ chosenDay, chosenSeat, updateSeat }) => {  
-  const [socket, setSocket] = useState('');
- 
+  
   const dispatch = useDispatch();
   const seats = useSelector(getSeats);
   const requests = useSelector(getRequests);
 
   useEffect(() => {
-    const socket = io(CLIENT_URL);
-    setSocket(socket)
-    socket.on('seatsUpdated', (seats) => {
-      dispatch(loadSeats(seats));
-    });
-   
+    dispatch(loadSeatsRequest());
   }, [dispatch])
+
+  useEffect(() => {
+    const socket = io(CLIENT_URL);
+    socket.on('seatsUpdated', (seats) =>{
+      dispatch(loadSeats(seats));
+    })
+  }, []);
   
   const isTaken = (seatId) => {
     return (seats.some(item => (item.seat === seatId && item.day === chosenDay)));
@@ -40,6 +42,7 @@ const SeatChooser = ({ chosenDay, chosenSeat, updateSeat }) => {
       { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].success) && <div className="seats">{[...Array(50)].map((x, i) => prepareSeat(i+1) )}</div>}
       { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].pending) && <Progress animated color="primary" value={50} /> }
       { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].error) && <Alert color="warning">Couldn't load seats...</Alert> }
+      Seats taken: {seats.filter((item) => item.day === chosenDay).length}/50
     </div>
   )
 }
