@@ -6,10 +6,11 @@ import { addSeatRequest, getRequests, loadSeatsRequest } from '../../../redux/se
 import './OrderTicketForm.scss';
 import SeatChooser from './../SeatChooser/SeatChooser';
 
+
 const OrderTicketForm = () => {
   const dispatch = useDispatch();
   const requests = useSelector(getRequests);
-
+  
   const [order, setOrder] = useState({
     client: '',
     email: '',
@@ -37,14 +38,14 @@ const OrderTicketForm = () => {
     e.preventDefault();
 
     if(order.client && order.email && order.day && order.seat) {
-      dispatch(addSeatRequest(order));
+      await dispatch(addSeatRequest(order));
       setOrder({
         client: '',
         email: '',
         day: 1,
         seat: '',
       });
-      await dispatch(loadSeatsRequest());
+      dispatch(loadSeatsRequest());
       setIsError(false);
     } else {
       setIsError(true);

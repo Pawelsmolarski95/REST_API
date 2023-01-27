@@ -8,7 +8,7 @@ const testimonialsRoutes = require('./routes/testimonials.routes');
 const concertRoutes = require('./routes/concerts.routes');
 const seatsRoutes = require('./routes/seats.routes');
 
-mongoose.connect('mongodb://localhost:27017/NewWaveDB', {useNewUrlParser: true });
+mongoose.connect('mongodb+srv://pawelsmolarski95:pawel@cluster0.ic2ley1.mongodb.net/NewWaveDB?retryWrites=true&w=majority', {useNewUrlParser: true });
 
 const db = mongoose.connection;
 

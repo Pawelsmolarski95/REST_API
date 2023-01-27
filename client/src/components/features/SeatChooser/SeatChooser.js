@@ -15,7 +15,7 @@ const SeatChooser = ({ chosenDay, chosenSeat, updateSeat }) => {
 
   useEffect(() => {
     dispatch(loadSeatsRequest());
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
     const socket = io(CLIENT_URL);
