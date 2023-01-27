@@ -10,6 +10,8 @@ https://restapi.pawelsmolarski9.repl.co/
 
 **Server:** Node, Express
 
+**Database:** MongoDB
+
 
 ## Screenshots
 
