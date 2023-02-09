@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const socket = require('socket.io');
+const helmet = require('helmet');
 const app = express();
 const cors = require('cors');
 const path = require('path');
@@ -29,11 +30,12 @@ const io = socket(server);
 io.on('connection', (socket) => {
   console.log('New socket !' + socket.id);
 
-});
+})
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cors());
+app.use(helmet());
 
 app.use(express.static(path.join(__dirname, '/client/build')));
 
